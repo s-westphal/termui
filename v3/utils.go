@@ -84,7 +84,7 @@ func GetMaxFloat64FromSlice(slice []float64) (float64, error) {
 	if len(slice) == 0 {
 		return 0, fmt.Errorf("cannot get max value from empty slice")
 	}
-	var max float64
+	max := math.Inf(-1)
 	for _, val := range slice {
 		if val > max {
 			max = val
@@ -97,7 +97,7 @@ func GetMaxFloat64From2dSlice(slices [][]float64) (float64, error) {
 	if len(slices) == 0 {
 		return 0, fmt.Errorf("cannot get max value from empty slice")
 	}
-	var max float64
+	max := math.Inf(-1)
 	for _, slice := range slices {
 		for _, val := range slice {
 			if val > max {
@@ -106,6 +106,21 @@ func GetMaxFloat64From2dSlice(slices [][]float64) (float64, error) {
 		}
 	}
 	return max, nil
+}
+
+func GetMinFloat64From2dSlice(slices [][]float64) (float64, error) {
+	if len(slices) == 0 {
+		return 0, fmt.Errorf("cannot get max value from empty slice")
+	}
+	min := math.Inf(1)
+	for _, slice := range slices {
+		for _, val := range slice {
+			if val < min {
+				min = val
+			}
+		}
+	}
+	return min, nil
 }
 
 func RoundFloat64(x float64) float64 {

@@ -18,8 +18,8 @@ import (
 	"os"
 	"strings"
 
-	ui "github.com/gizak/termui/v3"
-	"github.com/gizak/termui/v3/widgets"
+	ui "github.com/s-westphal/termui/v3"
+	"github.com/s-westphal/termui/v3/widgets"
 )
 
 func main() {
