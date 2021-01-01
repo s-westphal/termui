@@ -171,19 +171,17 @@ func (self *Plot) plotAxes(buf *Buffer, minVal, maxVal float64) {
 			image.Pt(self.Inner.Min.X+yAxisLabelsWidth, i+self.Inner.Min.Y),
 		)
 	}
-	// draw x axis labels
-	// draw 0
-	buf.SetString(
-		"0",
-		NewStyle(ColorWhite),
-		image.Pt(self.Inner.Min.X+yAxisLabelsWidth, self.Inner.Max.Y-1),
-	)
+
 	// draw rest
-	for x := self.Inner.Min.X + yAxisLabelsWidth + (xAxisLabelsGap)*self.HorizontalScale + 1; x < self.Inner.Max.X-1; {
-		label := fmt.Sprintf(
-			"%d",
-			(x-(self.Inner.Min.X+yAxisLabelsWidth)-1)/(self.HorizontalScale)+1,
-		)
+	for x := self.Inner.Min.X + (yAxisLabelsWidth * self.HorizontalScale); x < self.Inner.Max.X-1; {
+		index := (x - (self.Inner.Min.X + yAxisLabelsWidth)) / (self.HorizontalScale)
+		label := fmt.Sprintf("%d", index)
+		if len(self.DataLabels) > index {
+			label = fmt.Sprintf(
+				"%s",
+				self.DataLabels[index],
+			)
+		}
 		buf.SetString(
 			label,
 			NewStyle(ColorWhite),
