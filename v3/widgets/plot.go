@@ -93,7 +93,7 @@ func (self *Plot) renderBraille(buf *Buffer, drawArea image.Rectangle, minVal fl
 	case ScatterPlot:
 		for i, x := range self.Data[0] {
 			y := self.Data[1][i]
-			height := int((y - minVal) / (maxVal - minVal) * float64(drawArea.Dy()-1))
+			height := int((y - minVal) / MaxFloat64(1, maxVal-minVal) * float64(drawArea.Dy()-1))
 			canvas.SetPoint(
 				image.Pt(
 					(drawArea.Min.X+int((x-self.XMinVal)*float64(self.HorizontalScale*(drawArea.Dx()-1))/xDx))*2,
@@ -105,9 +105,9 @@ func (self *Plot) renderBraille(buf *Buffer, drawArea image.Rectangle, minVal fl
 		}
 	case LineChart:
 		for i, line := range self.Data {
-			previousHeight := int(((line[1] - minVal) / (maxVal - minVal)) * float64(drawArea.Dy()-1))
+			previousHeight := int(((line[1] - minVal) / MaxFloat64(1, maxVal-minVal)) * float64(drawArea.Dy()-1))
 			for j, val := range line[1:] {
-				height := int((val - minVal) / (maxVal - minVal) * float64(drawArea.Dy()-1))
+				height := int((val - minVal) / MaxFloat64(1, maxVal-minVal) * float64(drawArea.Dy()-1))
 				canvas.SetLine(
 					image.Pt(
 						(drawArea.Min.X+(j*self.HorizontalScale))*2,
@@ -133,7 +133,7 @@ func (self *Plot) renderDot(buf *Buffer, drawArea image.Rectangle, minVal float6
 	case ScatterPlot:
 		for i, x := range self.Data[0] {
 			y := self.Data[1][i]
-			height := int((y - minVal) / (maxVal - minVal) * float64(drawArea.Dy()-1))
+			height := int((y - minVal) / MaxFloat64(1, maxVal-minVal) * float64(drawArea.Dy()-1))
 			point := image.Pt(drawArea.Min.X+int((x-self.XMinVal)*float64(self.HorizontalScale*(drawArea.Dx()-1))/xDx), drawArea.Max.Y-1-height)
 			if point.In(drawArea) {
 				buf.SetCell(
@@ -147,7 +147,7 @@ func (self *Plot) renderDot(buf *Buffer, drawArea image.Rectangle, minVal float6
 		for i, line := range self.Data {
 			for j := 0; j < len(line) && j*self.HorizontalScale < drawArea.Dx(); j++ {
 				val := line[j]
-				height := int((val - minVal) / (maxVal - minVal) * float64(drawArea.Dy()-1))
+				height := int((val - minVal) / MaxFloat64(1, maxVal-minVal) * float64(drawArea.Dy()-1))
 				buf.SetCell(
 					NewCell(self.DotMarkerRune, NewStyle(SelectColor(self.LineColors, i))),
 					image.Pt(drawArea.Min.X+(j*self.HorizontalScale), drawArea.Max.Y-1-height),
